@@ -31,7 +31,6 @@ def get_complaints(tableText, nameO):
     return info
 
 
-
 def get_info_by_name(name):
     names = name.split(" ")
     php_serialized = phpserialize.dumps(names)
@@ -49,7 +48,7 @@ def get_info_by_name(name):
 
 
 def get_info_by_plate(plate):
-    
+
     INFO_LINK = f"https://srienlinea.sri.gob.ec/movil-servicios/api/v1.0/matriculacion/valor/{plate}"
     OWNER_LINK = "https://app3902.privynote.net/api/v1/transit/vehicle-owner"
     data = {
@@ -61,7 +60,7 @@ def get_info_by_plate(plate):
         "Referrer": "https://consultasecuador.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
     }
-    
+
     response = requests.post(OWNER_LINK, json=data, headers=headers)
     if response.status_code == 200:
         info = []
@@ -70,17 +69,24 @@ def get_info_by_plate(plate):
         if response.status_code == 200:
             info.append({"nombre": name})
             info.append({"placa": plate})
-            info.append({"cantonMatricula": response.json().get("cantonMatricula", "No encontrado")})
-            info.append({"marca": response.json().get("marca", "No encontrado")})
-            info.append({"modelo": response.json().get("modelo", "No encontrado")})
-            info.append({"servicio": response.json().get("servicio", "No encontrado")})
-            info.append({"informacion": response.json().get("informacion", "No encontrado")})
-            info.append({"anioModelo": response.json().get("anioModelo", "No encontrado")})
-            info.append({"deudas": response.json().get("deudas", "No encontrado")})
-            
+            info.append({"cantonMatricula": response.json().get(
+                "cantonMatricula", "No encontrado")})
+            info.append(
+                {"marca": response.json().get("marca", "No encontrado")})
+            info.append(
+                {"modelo": response.json().get("modelo", "No encontrado")})
+            info.append({"servicio": response.json().get(
+                "servicio", "No encontrado")})
+            info.append({"informacion": response.json().get(
+                "informacion", "No encontrado")})
+            info.append({"anioModelo": response.json().get(
+                "anioModelo", "No encontrado")})
+            info.append(
+                {"deudas": response.json().get("deudas", "No encontrado")})
+
             info_fis = get_info_by_name(name)
             return info, info_fis
         else:
-            return "Error 2"
+            return {"error": "Informacion del vehiculo no encontrada"}
     else:
-        return "Error 1"
+        return {"error": "Placa no encontrada"}
