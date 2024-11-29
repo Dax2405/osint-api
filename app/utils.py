@@ -35,12 +35,18 @@ def get_info_by_name(name):
     names = name.split(" ")
     php_serialized = phpserialize.dumps(names)
     php_serialized_str = php_serialized.decode("utf-8")
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Referrer": "https://consultasecuador.com/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+    }
 
     FIS_LINK = "https://www.gestiondefiscalias.gob.ec/siaf/comunes/noticiasdelito/info_mod.php"
     params = {
         "businfo": php_serialized_str,
     }
-    response = requests.post(FIS_LINK, params=params, verify=False)
+    response = requests.post(FIS_LINK, params=params, verify=False, headers=headers)
     if response.status_code == 200:
         return get_complaints(response.text, name)
     else:
