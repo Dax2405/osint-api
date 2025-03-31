@@ -24,9 +24,7 @@ def get_complaints(tableText, nameO):
             nombre = ' '.join(cols[1].text.split())
             nombre_set = set(nombre.lower().split())
             nameO_set = set(nameO.lower().split())
-            print(nombre_set, nameO_set, cols[2].text)
-            print(nameO_set.issubset(nombre_set))
-            print(cols[2].text == "SOSPECHOSO")
+
             if nameO_set.issubset(nombre_set) and "SOSPECHOSO" == cols[2].text:
                 estado = cols[2].text
                 inf.append({"lugar": lugar})
